@@ -1,0 +1,41 @@
+# ── What counts as relevant ───────────────────────────────────────────────
+# These keywords drive the Grants.gov searches AND filter foundation feeds.
+# Add or remove freely — this is the main knob you'll turn.
+keywords:
+  - energy storage
+  - grid
+  - hydrogen
+  - geothermal
+  - solar
+  - wind energy
+  - nuclear
+  - fusion
+  - carbon capture
+  - battery
+  - clean energy
+  - power electronics
+  - critical materials
+  - electrification
+
+# ── Federal (Grants.gov) ──────────────────────────────────────────────────
+# Grants.gov aggregates grant postings from DOE, ARPA-E, NSF, EPA, USDA, etc.
+# "EN" pulls the whole Energy funding category; the keyword searches above
+# catch energy-adjacent calls filed under other categories (e.g. Science).
+grants_gov:
+  funding_categories: "EN"
+  statuses: "posted|forecasted"     # what to include
+  max_per_query: 300                # pagination cap per query
+
+# ── Foundations / non-federal RSS feeds ───────────────────────────────────
+# Any RSS feed of funding opportunities works here. A dead or malformed feed
+# is logged and skipped — it will never break the morning run.
+# Verify these and add your own (many foundations publish program RSS feeds).
+foundation_feeds:
+  - name: "Philanthropy News Digest — RFPs"
+    url: "https://philanthropynewsdigest.org/feeds/rfp.rss"
+
+# ── Report settings ───────────────────────────────────────────────────────
+closing_soon_days: 14               # deadline threshold for the "soon" highlight
+report:
+  title: "Energy R&D Funding"
+  owner_timezone: "America/Los_Angeles"

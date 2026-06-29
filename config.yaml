@@ -2,19 +2,56 @@
 # These keywords drive the Grants.gov searches AND filter foundation feeds.
 # Add or remove freely — this is the main knob you'll turn.
 keywords:
-  - energy storage
-  - grid
-  - hydrogen
-  - geothermal
+  # Generation
   - solar
+  - photovoltaic
   - wind energy
+  - offshore wind
+  - geothermal
+  - hydropower
+  - marine energy
   - nuclear
-  - carbon capture
+  - advanced reactor
+  - small modular reactor
+  - fusion
+  - bioenergy
+  - biofuel
+  # Storage
+  - energy storage
   - battery
-  - clean energy
+  - long-duration storage
+  - thermal energy storage
+  # Grid & transmission
+  - grid
+  - microgrid
+  - smart grid
+  - transmission
   - power electronics
-  - critical materials
+  - distributed energy
+  # Hydrogen & fuels
+  - hydrogen
+  - electrolysis
+  - fuel cell
+  - ammonia
+  - synthetic fuel
+  # Carbon management
+  - carbon capture
+  - direct air capture
+  - carbon removal
+  - sequestration
+  - decarbonization
+  # Efficiency & industry
+  - energy efficiency
+  - industrial decarbonization
+  - heat pump
   - electrification
+  # Materials
+  - critical materials
+  - rare earth
+  - advanced materials
+  # General
+  - clean energy
+  - renewable energy
 
 # ── Federal (Grants.gov) ──────────────────────────────────────────────────
 # Grants.gov aggregates grant postings from DOE, ARPA-E, NSF, EPA, USDA, etc.
@@ -23,7 +60,11 @@ keywords:
 grants_gov:
   funding_categories: "EN"
   statuses: "posted|forecasted"     # what to include
-  max_per_query: 300                # pagination cap per query
+  max_per_query: 300                # pagination cap per search query
+  max_details: 200                  # cap on per-opportunity detail lookups
+  # ^ Each candidate gets one detail call to read its full text + award amount.
+  #   Only candidates whose text actually matches a keyword above are kept,
+  #   so the report no longer fills up with loosely-related Energy postings.
 
 # ── Foundations / non-federal RSS feeds ───────────────────────────────────
 # Any RSS feed of funding opportunities works here. A dead or malformed feed

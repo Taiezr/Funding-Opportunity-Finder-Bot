@@ -11,13 +11,17 @@ no server to maintain and the report updates whether or not your computer is on.
 
 ## What it pulls
 
-- **Federal — Grants.gov** via the public Search2 API (no key needed). Grants.gov
-  aggregates postings from DOE, ARPA-E, NSF, EPA, USDA and others, so one query
-  covers most federal energy grants. It searches the Energy funding category plus
-  each keyword in `config.yaml`.
+- **Federal — Grants.gov** via the public Search2 + fetchOpportunity APIs (no key).
+  Grants.gov aggregates postings from DOE, ARPA-E, NSF, EPA, USDA and others. The
+  bot searches the Energy category plus each keyword, then reads each candidate's
+  full record to (a) keep only opportunities whose text actually matches one of
+  your keywords and (b) capture the **award amount** per project.
 - **Foundations** — any RSS feed of funding opportunities you list in
   `config.yaml`. Items are kept only if they mention one of your keywords. A dead
   or malformed feed is logged and skipped, never breaking the run.
+
+The dashboard itself is interactive: filter by funding organization, keyword,
+days left, or days since released, and toggle to new items only.
 
 ---
 

@@ -1,13 +1,14 @@
 """Foundation / non-federal opportunities from RSS feeds.
 
 Generic and defensive: any RSS feed of funding opportunities can be added in
-config.yaml. Each entry is kept only if it mentions one of your keywords.
-A feed that is down or malformed is logged and skipped.
+config.yaml. An item is kept only if it mentions one of your keywords. A feed
+that is down or malformed is logged and skipped.
 """
 import datetime
-import time
 
 import feedparser
+
+from sources import match_keywords
 
 
 def _entry_date(entry):
@@ -19,7 +20,6 @@ def _entry_date(entry):
 
 
 def fetch(feeds, keywords):
-    kws = [k.lower() for k in keywords]
     out = []
     for feed in feeds or []:
         url = feed.get("url", "")
@@ -30,29 +30,31 @@ def fetch(feeds, keywords):
             print(f"[foundations] {name}: fetch error: {e}")
             continue
         if not parsed.entries:
-            note = getattr(parsed, "bozo_exception", "no entries")
-            print(f"[foundations] {name}: nothing parsed ({note})")
+            print(f"[foundations] {name}: nothing parsed "
+                  f"({getattr(parsed, 'bozo_exception', 'no entries')})")
             continue
 
         kept = 0
         for e in parsed.entries:
             title = (e.get("title") or "").strip()
             summary = e.get("summary") or ""
-            blob = f"{title} {summary}".lower()
-            if kws and not any(k in blob for k in kws):
+            matched = match_keywords(f"{title} {summary}", keywords)
+            if keywords and not matched:
                 continue
             link = e.get("link") or ""
-            uid = f"foundation:{name}:{e.get('id') or link or title}"
             out.append({
-                "uid": uid,
-                "source": f"Foundation · {name}",
+                "uid": f"foundation:{name}:{e.get('id') or link or title}",
+                "source": name,
                 "source_key": "foundation",
                 "title": title,
                 "agency": name,
                 "number": "",
                 "status": "open",
                 "open_date": _entry_date(e),
-                "close_date": None,   # most RFP feeds don't expose a clean deadline
+                "close_date": None,        # RFP feeds rarely expose a clean deadline
+                "award_ceiling": None,
+                "award_floor": None,
+                "matched_keywords": matched,
                 "url": link,
             })
             kept += 1
